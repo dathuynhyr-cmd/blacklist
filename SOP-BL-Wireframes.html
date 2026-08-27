@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP Blacklist — Wireframes (Wireflow)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#e9edf2; --ink:#1f2937; --ink2:#3b465a; --muted:#8590a3; --faint:#aab3c2;
+    --line:#c3cbd8; --line2:#dde2ea; --paper:#ffffff;
+    --accent:#4338ca; --accent-soft:#eef0fd; --accent-line:#c7ccf7;
+    --danger:#c62828; --danger-soft:#fdf0f0; --danger-line:#f0c2c2;
+    --ok:#0f766e; --ok-soft:#e9f6f4; --ok-line:#bfe3dd;
+    --amber:#b45309; --amber-soft:#fdf6ec; --amber-line:#f0dcbf;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+  /* ---------- page header ---------- */
+  header.top{background:#12161d;color:#f3f5f9;padding:34px clamp(20px,5vw,72px) 30px;border-bottom:3px solid var(--accent)}
+  header.top .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.22em;color:#8b93ff;text-transform:uppercase}
+  header.top h1{margin:.35em 0 .15em;font-size:clamp(24px,3.4vw,38px);font-weight:700;letter-spacing:-.02em}
+  header.top p{margin:0;color:#aeb6c4;max-width:70ch}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font-size:12.5px;color:#c6ccd8}
+  .meta b{color:#f3f5f9;font-weight:600}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:14px 26px;background:var(--paper);border:1px solid var(--line2);border-radius:12px;
+    padding:16px 20px;margin:26px clamp(16px,5vw,72px) 6px}
+  .legend .lg{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink2)}
+  .sw{width:26px;height:16px;border-radius:4px;border:1.5px solid var(--line);flex:none}
+  .sw.acc{background:var(--accent-soft);border-color:var(--accent-line)}
+  .sw.dng{background:var(--danger-soft);border-color:var(--danger-line)}
+  .sw.ok{background:var(--ok-soft);border-color:var(--ok-line)}
+  .sw.amb{background:var(--amber-soft);border-color:var(--amber-line)}
+  .sw.ph{background:repeating-linear-gradient(135deg,#eef1f5,#eef1f5 5px,#e2e7ee 5px,#e2e7ee 10px)}
+
+  /* ---------- section / flow ---------- */
+  section.flow{padding:30px clamp(16px,5vw,72px) 8px}
+  .flow-head{border-left:4px solid var(--accent);padding-left:14px;margin-bottom:6px}
+  .flow-head .code{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+  .flow-head h2{margin:.25em 0 .1em;font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .flow-head p{margin:0;color:var(--muted);max-width:80ch;font-size:13px}
+
+  .canvas{display:flex;gap:14px;align-items:flex-start;overflow-x:auto;padding:22px 4px 30px;scrollbar-width:thin}
+  .step{display:flex;align-items:center;gap:14px;flex:none}
+  .arrow{flex:none;width:34px;display:flex;align-items:center;justify-content:center;color:var(--faint);align-self:center;margin-top:150px}
+  .arrow svg{width:30px;height:30px}
+
+  figure.screen{margin:0;flex:none}
+  figcaption{margin-top:9px;max-width:320px}
+  .cap-t{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .cap-t .num{font-family:'JetBrains Mono',monospace;color:var(--accent);margin-right:6px}
+  .cap-d{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
+  .tag.br{background:#f3f4f6;color:#475569;border-color:#dde2ea}
+
+  /* ---------- device frames ---------- */
+  .frame{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 1px 2px rgba(20,30,50,.04),0 8px 24px -18px rgba(20,30,50,.25)}
+  .frame.web{width:320px}
+  .frame.web.wide{width:360px}
+  .chrome{height:30px;background:#f4f6f9;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:6px;padding:0 10px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#cfd6e0}
+  .urlbar{flex:1;height:15px;margin-left:8px;border-radius:8px;background:#e6eaf0}
+  .vp{padding:12px;min-height:260px;display:flex;flex-direction:column;gap:9px}
+
+  .frame.phone{width:236px;border-radius:26px;border:8px solid #12161d;background:#12161d;box-shadow:0 10px 30px -14px rgba(0,0,0,.5)}
+  .phone .notch{height:20px;display:flex;align-items:center;justify-content:center}
+  .phone .notch::before{content:"";width:64px;height:6px;border-radius:6px;background:#2b313c}
+  .phone .vp{background:var(--paper);border-radius:16px;min-height:400px}
+
+  /* ---------- wireframe primitives ---------- */
+  .h{height:11px;background:#dfe4ec;border-radius:4px}
+  .h.t{height:15px;width:60%;background:#c9d0da}
+  .h.s{width:40%} .h.m{width:70%} .h.l{width:90%} .h.xs{width:24%}
+  .row{display:flex;align-items:center;gap:8px}
+  .between{justify-content:space-between}
+  .grow{flex:1}
+  .muted{color:var(--muted);font-size:11.5px}
+  .lbl{font-size:11px;color:var(--muted);margin-bottom:-3px}
+  .txt{font-size:12px;color:var(--ink2)}
+  .txt.s{font-size:11px}
+
+  .btn{font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink2);display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  .btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.dng{background:var(--danger);border-color:var(--danger);color:#fff}
+  .btn.gho{background:#fff}
+  .btn.dis{background:#f1f3f7;color:var(--faint);border-color:var(--line2)}
+  .btn.sm{padding:4px 8px;font-size:10.5px}
+
+  .input{border:1px solid var(--line);border-radius:7px;padding:7px 9px;font-size:11.5px;color:var(--muted);background:#fff;display:flex;align-items:center;gap:7px}
+  .input .ic{color:var(--faint)}
+  .input.foc{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .chip{font-size:10.5px;padding:3px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink2);background:#fff;display:inline-flex;gap:5px;align-items:center}
+  .chip.dnc{background:var(--danger-soft);border-color:var(--danger-line);color:var(--danger)}
+  .chip.dns{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber)}
+  .chk{width:14px;height:14px;border:1.5px solid var(--line);border-radius:4px;flex:none;display:inline-flex;align-items:center;justify-content:center}
+  .chk.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chk.on svg{width:10px;height:10px}
+
+  /* table */
+  .tbl{border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+  .tr{display:grid;grid-template-columns:18px 1fr 52px 46px;gap:8px;align-items:center;padding:7px 9px;border-bottom:1px solid var(--line2);font-size:11px}
+  .tr:last-child{border-bottom:0}
+  .tr.head{background:#f5f7fa;color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+  .tr .num2{font-family:'JetBrains Mono',monospace;color:var(--ink2)}
+  .pag{display:flex;gap:4px;justify-content:flex-end;margin-top:2px}
+  .pg{width:20px;height:20px;border:1px solid var(--line2);border-radius:5px;font-size:10px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .pg.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* overlays */
+  .stage{position:relative}
+  .scrim{position:absolute;inset:0;background:rgba:(15,20,30,.28);background:rgba(15,20,30,.28)}
+  .modal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88%;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 50px -20px rgba(0,0,0,.5);padding:13px;display:flex;flex-direction:column;gap:9px}
+  .modal .mt{font-size:12.5px;font-weight:700}
+  .drop{border:1.5px dashed var(--line);border-radius:8px;padding:16px;text-align:center;color:var(--muted);font-size:11px;background:#fafbfd}
+  .bar{height:9px;border-radius:6px;background:#eef0f4;overflow:hidden}
+  .bar > i{display:block;height:100%;background:var(--accent);border-radius:6px}
+
+  .callout{border-radius:8px;padding:9px 11px;font-size:11px;display:flex;gap:8px;align-items:flex-start;border:1px solid}
+  .callout .ic{flex:none;margin-top:1px}
+  .callout.dng{background:var(--danger-soft);border-color:var(--danger-line);color:#7f1d1d}
+  .callout.ok{background:var(--ok-soft);border-color:var(--ok-line);color:#134e48}
+  .callout.amb{background:var(--amber-soft);border-color:var(--amber-line);color:#7c4a0a}
+  .callout .ct{font-weight:600}
+
+  .banner{border-radius:8px;padding:9px 11px;font-size:11px;display:flex;gap:8px;align-items:flex-start;border-left:4px solid}
+  .banner.dnc{background:var(--danger-soft);border-color:var(--danger);color:#7f1d1d}
+  .banner.dns{background:var(--amber-soft);border-color:var(--amber);color:#7c4a0a}
+  .banner.both{background:#fbeeee;border-color:var(--danger);color:#7f1d1d}
+  .banner .bt{font-weight:700}
+
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:var(--muted);text-align:center;padding:20px}
+  .empty .box{width:46px;height:46px;border:1.5px dashed var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--faint)}
+
+  .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px}
+  .key{aspect-ratio:1.5;border:1px solid var(--line2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink2);font-weight:600}
+
+  .note{background:#fff;border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:8px;padding:11px 13px;margin:4px 4px 0;max-width:900px;font-size:12.5px;color:var(--ink2)}
+  .note b{color:var(--ink)}
+  footer{padding:34px clamp(16px,5vw,72px) 60px;color:var(--muted);font-size:12px}
+  hr.div{border:0;border-top:1px solid var(--line2);margin:6px clamp(16px,5vw,72px)}
+  @media (prefers-reduced-motion:no-preference){figure.screen{transition:transform .15s ease}figure.screen:hover{transform:translateY(-2px)}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">SOP Platform · Epic SOP-BL · Wireflow</div>
+  <h1>Blacklist — Wireframes luồng hoạt động</h1>
+  <p>Wireframe low-fidelity theo từng User Story: bố cục, trạng thái màn hình và luồng chuyển tiếp. Mục đích thống nhất hành vi trước khi thiết kế high-fidelity — chưa phải giao diện cuối, màu chỉ mang tính quy ước trạng thái.</p>
+  <div class="meta">
+    <span>Vai trò: <b>Senior UI/UX Designer</b></span>
+    <span>Phạm vi: <b>Web Portal + Mobile App</b></span>
+    <span>Fidelity: <b>Low → Mid</b></span>
+    <span>Nguồn: <b>US-A01→A04, US-S01→S03</b></span>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="lg"><span class="sw ph"></span> Vùng nội dung (placeholder)</div>
+  <div class="lg"><span class="sw acc"></span> Hành động chính / chú thích</div>
+  <div class="lg"><span class="sw dng"></span> Chặn / cảnh báo Do Not Call</div>
+  <div class="lg"><span class="sw amb"></span> Loại trừ / Do Not Send</div>
+  <div class="lg"><span class="sw ok"></span> Thành công</div>
+  <div class="lg"><span class="mono" style="font-size:11px">AC-xx</span> tham chiếu tiêu chí · <span class="mono" style="font-size:11px">BR-BL-xx</span> quy tắc</div>
+</div>
+
+<!-- ============ US-A04 ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-A04 · Admin</div>
+    <h2>Quản lý danh sách Blacklist</h2>
+    <p>Màn nền của khu Cấu hình Blacklist: xem, tìm kiếm tương đối, lọc theo loại, chọn dòng để gỡ hàng loạt. Là điểm khởi phát cho Import, Thêm số và Gỡ.</p>
+  </div>
+  <div class="canvas">
+
+    <!-- A4.1 danh sách -->
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="row between"><div class="h t" style="width:46%"></div>
+            <div class="row"><span class="btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>Import</span><span class="btn pri">+ Thêm số</span></div>
+          </div>
+          <div class="row">
+            <div class="input grow"><span class="ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></span>Tìm số điện thoại…</div>
+            <div class="input" style="width:96px">Loại: Tất cả ▾</div>
+          </div>
+          <div class="tbl">
+            <div class="tr head"><span></span><span>Số điện thoại</span><span>Loại</span><span></span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dns">DNS</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0912 000 111</span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0933 222 444</span><span class="chip dns">DNS</span><span class="txt s muted">⋯</span></div>
+          </div>
+          <div class="pag"><span class="pg">‹</span><span class="pg on">1</span><span class="pg">2</span><span class="pg">3</span><span class="pg">›</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">A4.1</span>Danh sách mặc định</div>
+        <div class="cap-d">6 cột; số thuộc cả hai loại tách thành 2 dòng.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-27</span><span class="tag br">BR-BL-28</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- A4.2 tìm kiếm -->
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="row"><div class="input grow foc"><span class="ic">🔍</span><span style="color:var(--ink2)">7654</span></div>
+            <div class="input" style="width:96px">Loại: DNC ▾</div></div>
+          <div class="txt s muted">Khớp tương đối · chuẩn hoá từ khoá trước khi tìm</div>
+          <div class="tbl">
+            <div class="tr head"><span></span><span>Số điện thoại</span><span>Loại</span><span></span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0987&nbsp;<b style="background:#fff3bf">654</b>&nbsp;321</span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0977 <b style="background:#fff3bf">7654</b></span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+          </div>
+          <div class="txt s muted" style="margin-top:auto">2 kết quả · ≤ 1 giây</div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">A4.2</span>Tìm kiếm + lọc</div>
+        <div class="cap-d">Khớp tiền tố/hậu tố/chứa chuỗi; kết hợp bộ lọc Loại.</div>
+        <div class="tags"><span class="tag">AC-02</span><span class="tag">AC-06</span><span class="tag br">BR-BL-29</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- A4.3 chọn nhiều -->
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="callout" style="background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)"><span class="ct">Đã chọn 3 số</span><span class="grow"></span><span class="btn dng sm">Gỡ hàng loạt</span></div>
+          <div class="tbl">
+            <div class="tr head"><span class="chk on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span><span>Số điện thoại</span><span>Loại</span><span></span></div>
+            <div class="tr"><span class="chk on"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span><span class="num2">0987 654 321</span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk on"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span><span class="num2">0912 000 111</span><span class="chip dnc">DNC</span><span class="txt s muted">⋯</span></div>
+            <div class="tr"><span class="chk on"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span><span class="num2">0933 222 444</span><span class="chip dns">DNS</span><span class="txt s muted">⋯</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">A4.3</span>Chọn nhiều · checkbox tổng</div>
+        <div class="cap-d">Chọn tất cả kết quả → mở hành động gỡ hàng loạt (US-A03).</div>
+        <div class="tags"><span class="tag">AC-08</span><span class="tag br">BR-BL-30</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- A4.4 empty / no perm -->
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="empty">
+            <div class="box"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 9h16"/></svg></div>
+            <div class="txt">Chưa có số nào trong Blacklist</div>
+            <div class="txt s muted">Thêm mới hoặc import để bắt đầu.</div>
+            <div class="row"><span class="btn">Import</span><span class="btn pri">+ Thêm số</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">A4.4</span>Trạng thái rỗng &amp; chặn quyền</div>
+        <div class="cap-d">Rỗng → mời hành động. Thiếu quyền xem → chặn truy cập.</div>
+        <div class="tags"><span class="tag">AC-07</span><span class="tag">AC-09</span><span class="tag br">BR-BL-31</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+  <div class="note"><b>Ghi chú thiết kế.</b> Nút <b>Import</b> và <b>+ Thêm số</b> chỉ hiển thị với quyền “Cấu hình Blacklist”; role chỉ có quyền xem thấy danh sách nhưng ẩn mọi hành động ghi. Ô tìm kiếm chuẩn hoá từ khoá về 10 chữ số trước khi khớp để nhất quán với dữ liệu lưu.</div>
+</section>
+<hr class="div">
+
+<!-- ============ US-A01 IMPORT ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-A01 · Admin</div>
+    <h2>Import danh sách từ file</h2>
+    <p>Nạp hàng loạt từ .xlsx/.csv theo nguyên tắc all-or-nothing, xử lý bất đồng bộ có thanh tiến độ, và xuất file báo lỗi khi có dòng lỗi.</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div><div class="h l"></div></div>
+        <div class="scrim"></div>
+        <div class="modal">
+          <div class="mt">Import Blacklist</div>
+          <div class="drop"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4m0 0L8 8m4-4l4 4M5 20h14"/></svg><div style="margin-top:6px">Kéo thả hoặc chọn file .xlsx / .csv</div></div>
+          <div class="row between"><span class="txt s" style="color:var(--accent)">↓ Tải file mẫu</span><span class="txt s muted">Tối đa 50.000 dòng</span></div>
+          <div class="row between"><span class="btn gho">Huỷ</span><span class="btn dis">Xác nhận import</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">B1</span>Chọn file</div>
+        <div class="cap-d">Nút xác nhận mờ tới khi chọn được file hợp lệ.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-03</span><span class="tag br">BR-BL-11</span><span class="tag br">BR-BL-16</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div></div>
+        <div class="scrim"></div>
+        <div class="modal">
+          <div class="mt">Đang xử lý import</div>
+          <div class="bar"><i style="width:25%"></i></div>
+          <div class="txt s muted">Đang xử lý 12.500 / 50.000 (25%)</div>
+          <div class="callout amb"><span class="ic">ⓘ</span><div>Có thể thu gọn và rời màn hình — tác vụ chạy độc lập phía máy chủ.</div></div>
+          <div class="row between"><span></span><span class="btn gho sm">Thu gọn</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">B2</span>Tiến độ (bất đồng bộ)</div>
+        <div class="cap-d">Chạy nền độc lập với phiên client; quay lại xem kết quả.</div>
+        <div class="tags"><span class="tag">AC-13</span><span class="tag br">BR-BL-12</span><span class="tag br">BR-BL-13</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h15m0 0l-5-5m5 5l-5 5M4 16h15m0 0l-5-5m5 5l-5 5" opacity=".5"/><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- success -->
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div></div>
+        <div class="scrim"></div>
+        <div class="modal">
+          <div class="callout ok"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><div><div class="ct">Import thành công</div>Đã thêm 50.000 số vào Blacklist.</div></div>
+          <div class="row between"><span></span><span class="btn pri">Xong</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">B3</span>Thành công</div>
+        <div class="cap-d">Hiển thị tổng số dòng đã thêm; ghi audit trail.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-17</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v15m0 0l-5-5m5 5l5-5" opacity="0"/><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- fail -->
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div></div>
+        <div class="scrim"></div>
+        <div class="modal">
+          <div class="callout dng"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l9 16H3z"/><path d="M12 9v5m0 3h.01"/></svg></span><div><div class="ct">Import thất bại — 3 dòng lỗi</div>Không thêm dòng nào (all-or-nothing).</div></div>
+          <div class="row between"><span class="btn gho sm">↓ Tải file báo lỗi</span><span class="btn pri sm">Sửa &amp; nạp lại</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">B4</span>Thất bại &amp; file báo lỗi</div>
+        <div class="cap-d">Từ chối cả file; xuất file đánh dấu dòng/ô lỗi.</div>
+        <div class="tags"><span class="tag">AC-02</span><span class="tag">AC-03…08</span><span class="tag br">BR-BL-09</span><span class="tag br">BR-BL-10</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+  <div class="note"><b>Biến thể lỗi.</b> Lỗi cấp file (sai định dạng, sai cấu trúc cột, rỗng, vượt 50.000 dòng — <span class="mono">AC-09…12</span>) chặn ngay trước khi tạo tác vụ, hiển thị bằng toast đỏ. Server gián đoạn giữa chừng (<span class="mono">AC-14</span>) hiển thị “Lỗi khi import” + nút <b>Retry</b>; Retry chạy lại toàn bộ file trên giao dịch mới, không resume dở dang.</div>
+</section>
+<hr class="div">
+
+<!-- ============ US-A02 ADD ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-A02 · Admin</div>
+    <h2>Thêm thủ công một số</h2>
+    <p>Bổ sung số lẻ, cho phép gắn một hoặc nhiều loại trong một lần, có bước xác nhận trước khi ghi.</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div></div>
+        <div class="scrim"></div>
+        <div class="modal">
+          <div class="mt">Thêm số vào Blacklist</div>
+          <div><div class="lbl">Họ tên (tuỳ chọn)</div><div class="input">Nguyễn Văn A</div></div>
+          <div><div class="lbl">Số điện thoại *</div><div class="input foc" style="color:var(--ink2)">0987654321</div></div>
+          <div><div class="lbl">Loại * (chọn ≥ 1)</div>
+            <div class="row" style="gap:8px;margin-top:4px">
+              <span class="chip dnc"><span class="chk on" style="width:12px;height:12px"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>Do Not Call</span>
+              <span class="chip dns"><span class="chk on" style="width:12px;height:12px"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5L20 6"/></svg></span>Do Not Send</span>
+            </div>
+          </div>
+          <div class="row between"><span class="btn gho">Huỷ</span><span class="btn pri">Lưu</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">C1</span>Form thêm (đa loại)</div>
+        <div class="cap-d">Số ĐT chuẩn hoá 10 chữ số; Loại đa chọn.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag">AC-03</span><span class="tag br">BR-BL-19</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div></div>
+        <div class="scrim"></div>
+        <div class="modal" style="width:78%">
+          <div class="mt">Xác nhận thêm số?</div>
+          <div class="txt s muted">0987 654 321 → Do Not Call, Do Not Send. Có hiệu lực ngay.</div>
+          <div class="row between"><span class="btn gho">Huỷ</span><span class="btn pri">Xác nhận</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">C2</span>Popup xác nhận</div>
+        <div class="cap-d">Chỉ ghi khi Admin đồng ý; Huỷ giữ nguyên form.</div>
+        <div class="tags"><span class="tag">AC-04</span><span class="tag br">BR-BL-20</span><span class="tag br">BR-BL-21</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="callout ok"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><div>Đã thêm số vào Do Not Call, Do Not Send.</div></div>
+          <div class="tbl" style="margin-top:2px">
+            <div class="tr"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dnc">DNC</span><span></span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dns">DNS</span><span></span></div>
+          </div>
+          <div class="callout dng" style="margin-top:auto"><span class="ic">!</span><div>Đã tồn tại số điện thoại trong Blacklist <span class="txt s muted">(biến thể lỗi C4)</span></div></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">C3</span>Kết quả &amp; lỗi inline</div>
+        <div class="cap-d">Thành công cập nhật danh sách; lỗi hiển thị tại chỗ.</div>
+        <div class="tags"><span class="tag">AC-05</span><span class="tag">AC-06</span><span class="tag">AC-07</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+  <div class="note"><b>Điểm cần chốt (OQ-B03).</b> Khi chọn nhiều loại mà số đã trùng ở một loại nhưng chưa trùng ở loại còn lại: <b>thêm phần chưa trùng và báo phần trùng</b>, hay <b>chặn toàn bộ thao tác</b>? Wireframe hiện minh hoạ nhánh báo lỗi tại chỗ; quyết định cuối sẽ điều chỉnh hành vi popup C2/C3.</div>
+</section>
+<hr class="div">
+
+<!-- ============ US-A03 REMOVE ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-A03 · Admin</div>
+    <h2>Gỡ số khỏi Blacklist</h2>
+    <p>Gỡ theo từng loại, nhiều loại, hoặc hàng loạt nhiều số; luôn có bước xác nhận. Sau khi gỡ, số thôi kích hoạt cảnh báo theo kênh tương ứng.</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="tbl">
+            <div class="tr head"><span></span><span>Số điện thoại</span><span>Loại</span><span></span></div>
+            <div class="tr" style="background:var(--accent-soft)"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dnc">DNC</span><span class="btn dng sm" style="padding:2px 7px">Gỡ</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0987 654 321</span><span class="chip dns">DNS</span><span class="txt s muted">Gỡ</span></div>
+            <div class="tr"><span class="chk"></span><span class="num2">0912 000 111</span><span class="chip dnc">DNC</span><span class="txt s muted">Gỡ</span></div>
+          </div>
+          <div class="txt s muted">Di chuột vào dòng để hiện nút Gỡ · số ở 2 loại gỡ độc lập từng dòng</div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">D1</span>Gỡ theo dòng / theo loại</div>
+        <div class="cap-d">Số thuộc 2 loại → gỡ độc lập từng loại (từng dòng).</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag">AC-02</span><span class="tag br">BR-BL-22</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div></div>
+        <div class="scrim"></div>
+        <div class="modal" style="width:80%">
+          <div class="mt">Xác nhận gỡ số?</div>
+          <div class="txt s muted">Gỡ <b>20 số đã chọn</b> khỏi Blacklist. Không thể hoàn tác.</div>
+          <div class="row between"><span class="btn gho">Huỷ</span><span class="btn dng">Gỡ 20 số</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">D2</span>Xác nhận (đơn / hàng loạt)</div>
+        <div class="cap-d">Gỡ nhiều loại/lần và hàng loạt nhiều số; audit từng số.</div>
+        <div class="tags"><span class="tag">AC-03</span><span class="tag">AC-04</span><span class="tag br">BR-BL-23</span><span class="tag br">BR-BL-24</span><span class="tag br">BR-BL-25</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="callout ok"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><div>Đã gỡ 20 số khỏi Blacklist.</div></div>
+          <div class="callout amb"><span class="ic">ⓘ</span><div>Số vừa gỡ thôi kích hoạt cảnh báo ngay ở lần gọi/nhắn kế tiếp.</div></div>
+          <div class="callout dng" style="margin-top:auto"><span class="ic">!</span><div>Số điện thoại không còn tồn tại trong danh sách <span class="txt s muted">(biến thể D — AC-06)</span></div></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">D3</span>Kết quả</div>
+        <div class="cap-d">Thành công + hiệu lực real-time; báo lỗi khi đã bị gỡ trước.</div>
+        <div class="tags"><span class="tag">AC-05</span><span class="tag">AC-06</span><span class="tag">AC-07</span><span class="tag br">BR-BL-26</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+<hr class="div">
+
+<!-- ============ US-S01 CALL ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-S01 · Salesman</div>
+    <h2>Cảnh báo &amp; chặn khi gọi ra (Do Not Call)</h2>
+    <p>Đối chiếu real-time trước khi quay số; số thuộc Do Not Call bị chặn cứng, không có tùy chọn tiếp tục. Web + Mobile (click-to-call trong SOP).</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="row"><div class="h" style="width:34px;height:34px;border-radius:50%"></div><div class="grow"><div class="h t" style="width:60%"></div><div class="h s" style="margin-top:6px"></div></div></div>
+          <div class="row between" style="margin-top:6px">
+            <div class="num2 txt">0987 654 321</div>
+            <span class="btn pri"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5c0 8 7 15 15 15l2-4-5-2-2 2a12 12 0 01-6-6l2-2-2-5z"/></svg>Gọi</span>
+          </div>
+          <div class="h l" style="margin-top:8px"></div><div class="h m"></div><div class="h l"></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">E1</span>Điểm gọi (click-to-call)</div>
+        <div class="cap-d">Trước khi quay số: chuẩn hoá + đối chiếu ≤ 500ms.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-32</span><span class="tag br">BR-BL-33</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.55"><div class="h t"></div><div class="h l"></div></div>
+        <div class="scrim"></div>
+        <div class="modal" style="border-top:4px solid var(--danger)">
+          <div class="row"><span style="color:var(--danger)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5m0 3h.01"/></svg></span><div class="mt" style="color:var(--danger)">Không thể gọi</div></div>
+          <div class="txt s">Số điện thoại từ chối nhận cuộc gọi quảng cáo. Cân nhắc khi gọi điện.</div>
+          <div class="row between"><span></span><span class="btn dng">Đã hiểu</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">E2</span>Popup chặn (hard block)</div>
+        <div class="cap-d">Chỉ có nút đóng — không có “tiếp tục gọi”.</div>
+        <div class="tags"><span class="tag">AC-02</span><span class="tag">AC-03</span><span class="tag br">BR-BL-35</span><span class="tag br">BR-BL-36</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <!-- mobile -->
+    <figure class="screen">
+      <div class="frame phone stage">
+        <div class="notch"></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="num2 txt" style="text-align:center;font-size:16px;margin:6px 0">0987 654 321</div>
+          <div class="keypad"><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span><span class="key">6</span><span class="key">7</span><span class="key">8</span><span class="key">9</span><span class="key">＊</span><span class="key">0</span><span class="key">#</span></div>
+        </div>
+        <div class="scrim" style="border-radius:16px"></div>
+        <div class="modal" style="width:84%;border-top:4px solid var(--danger)">
+          <div style="color:var(--danger);text-align:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5m0 3h.01"/></svg></div>
+          <div class="txt s" style="text-align:center">Số điện thoại từ chối nhận cuộc gọi quảng cáo. Cân nhắc khi gọi điện.</div>
+          <span class="btn dng" style="justify-content:center">Đã hiểu</span>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">E3</span>Mobile — click-to-call</div>
+        <div class="cap-d">Chặn nhất quán; phạm vi giới hạn ở click-to-call trong SOP.</div>
+        <div class="tags"><span class="tag">AC-09</span><span class="tag br">BR-BL-39</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+  <div class="note"><b>Fail-open.</b> Khi không chuẩn hoá được số, đối chiếu quá 500ms, hoặc module lỗi (<span class="mono">AC-05…07</span>) → <b>không chặn, cho gọi</b>, không hiện popup. Cảnh báo chỉ hiển thị cho sale đang thao tác, không thông báo Manager; mỗi lần hiển thị được ghi log phục vụ báo cáo Phase 2.</div>
+</section>
+<hr class="div">
+
+<!-- ============ US-S02 MEGAPUSH ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-S02 · Salesman · Web Portal</div>
+    <h2>Megapush — lọc &amp; loại trừ số Do Not Send</h2>
+    <p>Chiến dịch nhắn hàng loạt tự loại các số Do Not Send, vẫn gửi cho số hợp lệ còn lại; chặn nếu tất cả đều Do Not Send.</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="h t" style="width:52%"></div>
+          <div><div class="lbl">Danh sách người nhận</div><div class="input">Đã chọn 5.000 số</div></div>
+          <div><div class="lbl">Nội dung tin</div><div class="input" style="height:44px;align-items:flex-start">Ưu đãi tháng 8…</div></div>
+          <div class="row between" style="margin-top:auto"><span class="txt s muted">Kênh: Zalo cá nhân</span><span class="btn pri">Gửi chiến dịch</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">F1</span>Cấu hình chiến dịch</div>
+        <div class="cap-d">Đối chiếu đúng tập số được chọn trong cấu hình.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-41</span><span class="tag br">BR-BL-47</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web wide stage">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp" style="filter:blur(1px);opacity:.6"><div class="h t"></div><div class="h l"></div><div class="h m"></div></div>
+        <div class="scrim"></div>
+        <div class="modal" style="border-top:4px solid var(--amber)">
+          <div class="mt" style="color:var(--amber)">20 số bị loại khỏi chiến dịch</div>
+          <div class="txt s">Số điện thoại từ chối nhận tin nhắn quảng cáo. Cân nhắc khi nhắn tin cho khách hàng.</div>
+          <div class="tbl" style="max-height:70px;overflow:auto">
+            <div class="tr" style="grid-template-columns:1fr 46px"><span class="num2">0933 222 444</span><span class="chip dns">DNS</span></div>
+            <div class="tr" style="grid-template-columns:1fr 46px"><span class="num2">0968 111 222</span><span class="chip dns">DNS</span></div>
+          </div>
+          <div class="row between"><span class="btn gho sm">Xem tất cả</span><span class="btn pri sm">Gửi 4.980 số còn lại</span></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">F2</span>Thông báo loại trừ</div>
+        <div class="cap-d">Nêu số lượng + danh sách số bị loại; tiếp tục gửi phần còn lại.</div>
+        <div class="tags"><span class="tag">AC-02</span><span class="tag br">BR-BL-42</span><span class="tag br">BR-BL-43</span><span class="tag br">BR-BL-46</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="callout ok"><span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></span><div>Đang gửi tới 4.980 số hợp lệ.</div></div>
+          <div class="bar"><i style="width:64%"></i></div>
+          <div class="txt s muted">20 số Do Not Send đã loại · fail-open cấp từng số</div>
+          <div class="callout dng" style="margin-top:auto"><span class="ic">!</span><div>Không còn số hợp lệ để gửi chiến dịch <span class="txt s muted">(F4 — tất cả DNS · AC-03)</span></div></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">F3 / F4</span>Gửi &amp; chặn khi rỗng</div>
+        <div class="cap-d">Gửi phần còn lại; chặn khi sau lọc còn 0 số.</div>
+        <div class="tags"><span class="tag">AC-03</span><span class="tag">AC-05</span><span class="tag br">BR-BL-44</span><span class="tag br">BR-BL-45</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+<hr class="div">
+
+<!-- ============ US-S03 BANNER ============ -->
+<section class="flow">
+  <div class="flow-head">
+    <div class="code">US-S03 · Salesman</div>
+    <h2>Banner cảnh báo trong profile khách hàng</h2>
+    <p>Quét toàn bộ số của khách (tối đa 10), hiển thị banner theo tình trạng số — không phụ thuộc kênh — và nêu cụ thể số bị cảnh báo.</p>
+  </div>
+  <div class="canvas">
+
+    <figure class="screen">
+      <div class="frame web wide">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="banner both"><span class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 9v5m0 3h.01"/></svg></span><div><div class="bt">Số 0987 654 321 thuộc Blacklist</div>Từ chối nhận cuộc gọi và tin nhắn quảng cáo (Do Not Call + Do Not Send).</div></div>
+          <div class="row" style="margin-top:4px"><div class="h" style="width:44px;height:44px;border-radius:50%"></div><div class="grow"><div class="h t" style="width:55%"></div><div class="h s" style="margin-top:6px"></div></div></div>
+          <div class="lbl" style="margin-top:6px">Số điện thoại</div>
+          <div class="tbl">
+            <div class="tr" style="grid-template-columns:1fr 70px"><span class="num2">0987 654 321 <span class="txt s muted">(chính)</span></span><span class="chip dnc" style="font-size:9px">Blacklist</span></div>
+            <div class="tr" style="grid-template-columns:1fr 70px"><span class="num2">0902 555 777 <span class="txt s muted">(phụ)</span></span><span class="txt s muted">sạch</span></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">G1</span>Banner gộp · nhiều số</div>
+        <div class="cap-d">Số thuộc cả hai loại → 1 banner gộp; số phụ sạch vẫn liên hệ.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag">AC-02</span><span class="tag">AC-04</span><span class="tag br">BR-BL-49</span><span class="tag br">BR-BL-51</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame web">
+        <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="urlbar"></span></div>
+        <div class="vp">
+          <div class="lbl">Biến thể theo loại</div>
+          <div class="banner dnc"><span class="ic">📵</span><div><div class="bt">Do Not Call</div>Số 0912 000 111 từ chối nhận cuộc gọi quảng cáo.</div></div>
+          <div class="banner dns"><span class="ic">✉</span><div><div class="bt">Do Not Send</div>Số 0933 222 444 từ chối nhận tin nhắn quảng cáo.</div></div>
+          <div class="note" style="margin:6px 0 0;border-left-color:var(--amber);font-size:11px">Câu chữ đang ở trạng thái <b>Đề xuất (OQ-H02)</b> — chờ chốt bản chính thức.</div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">G2</span>Biến thể DNC / DNS</div>
+        <div class="cap-d">Nội dung theo tình trạng số, không theo kênh đang mở.</div>
+        <div class="tags"><span class="tag">AC-01</span><span class="tag br">BR-BL-48</span><span class="tag br">BR-BL-50</span></div>
+      </figcaption>
+    </figure>
+
+    <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m0 0l-5-5m5 5l-5 5"/></svg></div>
+
+    <figure class="screen">
+      <div class="frame phone">
+        <div class="notch"></div>
+        <div class="vp">
+          <div class="banner both" style="font-size:10px"><span class="ic">⚠</span><div><div class="bt">0987 654 321 · Blacklist</div>Từ chối gọi &amp; nhắn quảng cáo.</div></div>
+          <div class="row" style="margin-top:8px"><div class="h" style="width:40px;height:40px;border-radius:50%"></div><div class="grow"><div class="h t" style="width:60%"></div><div class="h s" style="margin-top:5px"></div></div></div>
+          <div class="h l" style="margin-top:10px"></div><div class="h m"></div><div class="h l"></div><div class="h m"></div>
+          <div class="callout amb" style="margin-top:8px;font-size:10px"><span class="ic">ⓘ</span><div>Fail-open: nếu không đối chiếu được, profile vẫn mở, ẩn banner.</div></div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-t"><span class="num">G3 / G4</span>Mobile &amp; fail-open</div>
+        <div class="cap-d">Nhất quán Web/Mobile; cập nhật khi tải lại; lỗi → ẩn banner.</div>
+        <div class="tags"><span class="tag">AC-05</span><span class="tag">AC-06</span><span class="tag">AC-07</span><span class="tag br">BR-BL-52</span><span class="tag br">BR-BL-53</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+  <div class="note"><b>Quan hệ với lớp chặn cứng.</b> Banner là lớp <b>nhận biết sớm</b>, không thay thế chặn tại điểm hành động: dù banner ẩn do fail-open, US-S01/US-S02 vẫn đối chiếu lại khi thực sự gọi/nhắn.</div>
+</section>
+
+<footer>
+  <b>SOP-BL — Wireframes v1.0</b> · Low/Mid-fidelity wireflow · Biên soạn theo US-A01→A04, US-S01→S03.<br>
+  Chưa phải giao diện high-fidelity: bố cục, nội dung và trạng thái là căn cứ; màu sắc, khoảng cách và typography cuối do bước visual design quyết định. Hai điểm cần chốt: OQ-B03 (thêm đa loại khi trùng một phần) và OQ-H02 (câu chữ banner).
+</footer>
+</body>
+</html>
